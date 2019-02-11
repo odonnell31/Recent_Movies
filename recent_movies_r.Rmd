@@ -1,0 +1,40 @@
+---
+title: "Recent Movies from MySQL"
+author: "ODONNELL"
+date: "February 10, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#download RMySQL package to connect to MySQL
+#install.packages("RMySQL")
+
+#load  RMySQL package
+library(DBI)
+library(RMySQL)
+```
+
+```{r}
+#creating a db connection object
+mydb = dbConnect(MySQL(),
+                 user='root',
+                 password='password',
+                 host='localhost',
+                 dbname='recent_movies')
+```
+
+```{r}
+#display databases connected to R
+dbListTables(mydb)
+```
+
+```{r}
+#grab the recentmovies database as a dataframe
+rs = dbSendQuery(mydb, "select * from recentmovies")
+movies <- fetch(rs, n=-1)
+```
+
